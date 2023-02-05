@@ -39,21 +39,22 @@ public class MemorableQuotes
 
             if(args[0].equals("random"))
             {
-                printQuote(getRandomQuotes(quotes));
+                int position = getRandomQuotes(quotes);
+                printQuote(quotes.get(position), position);
             }
 
             else if(args[0].equals("add"))
             {
                 addQuotes(args);
             }
-            
+
             else if(args[0].equals("delete"))
             {
                 if (args[1].contains("position="))
                 {
                     String[] split = args[1].split("=",2);
                     int position = Integer.parseInt(split[1]);
-                    boolean res = modifyQuotes(position-1, "", filename);
+                    boolean res = modifyQuotes(position, "", filename);
 
                     if (res)
                         System.out.println("File deleted successfully");
@@ -95,7 +96,7 @@ public class MemorableQuotes
             {
                 for(int i = 0; i < quotes.size(); i++)
                 {
-                    printQuote(quotes[i]);
+                    printQuote(quotes.get(i), i);
                 }   
             }
 
@@ -121,7 +122,7 @@ public class MemorableQuotes
                         int max = 100000;
                         int delay =  Integer.parseInt(split[1]);
                         
-                        displayQuotes(quotes, delay, max);
+                        displayQuotes(delay, max);
                     }
                     else if(args[1].contains("max="))
                     {
@@ -129,13 +130,13 @@ public class MemorableQuotes
                         int max = Integer.parseInt(split[1]);
                         int delay = 3;
                         
-                        displayQuotes(quotes, delay, max);
+                        displayQuotes(delay, max);
                     }
                     else
                     {
                         int delay = 3;
                         int max = 1000;
-                        displayQuotes(quotes, delay, max);
+                        displayQuotes(delay, max);
                     }
                 }
                 else if (total >= 3)
@@ -148,7 +149,7 @@ public class MemorableQuotes
                         int delay =  Integer.parseInt(split1[1]);
                         int max =  Integer.parseInt(split2[1]);
                         
-                        displayQuotes(quotes, delay, max);
+                        displayQuotes(delay, max);
                     }
                     else if(args[1].contains("max=") && args[2].contains("delay="))
                     {
@@ -158,14 +159,14 @@ public class MemorableQuotes
                         int delay =  Integer.parseInt(split2[1]);
                         int max =  Integer.parseInt(split1[1]);
                         
-                        displayQuotes(quotes, delay, max);
+                        displayQuotes(delay, max);
                     }
                 }
                 else
                 {
                     int delay = 3;
                     int max = 1000;
-                    displayQuotes(quotes, delay, max);
+                    displayQuotes(delay, max);
                 }
             }
 
@@ -325,7 +326,7 @@ public class MemorableQuotes
         String lines[] = getLineQuotes(filename);
 
         // 3. Replace string at position
-        lines[position] = str;
+        lines[position-1] = str;
 
         // 4. Write modified list of lines back to file
         writeLineQuotes(lines, filename);
@@ -339,43 +340,56 @@ public class MemorableQuotes
         FileOutputStream fs = null;
         PrintStream ps = null;
       
-        try {
-          // 2. Create instances of classes FileOutputStream, PrintStream
-          fs = new FileOutputStream(filename); // create a file stream
-          ps = new PrintStream(fs); // associate file stream with PrintStream output stream
-      
-          // 3. The loop of writing the lines[] array to the file
-          for (int i=0; i<lines.length; i++)
-            ps.println(lines[i]);
+        try 
+        {
+            // 2. Create instances of classes FileOutputStream, PrintStream
+            fs = new FileOutputStream(filename); // create a file stream
+            ps = new PrintStream(fs); // associate file stream with PrintStream output stream
+        
+            // 3. The loop of writing the lines[] array to the file
+            for (int i=0; i<lines.length; i++)
+            {
+                ps.println(lines[i]);
+            }
         }
-        catch (IOException e) {
+        catch (IOException e) 
+        {
           // If the error opening the file or other error
           System.out.println("I/O error: " + e);
         }
-        finally {
-          if (fs!=null) {
-            try {
-              fs.close();
+        finally 
+        {
+            if (fs!=null) 
+            {
+                try 
+                {
+                    fs.close();
+                }
+                catch (IOException e2) 
+                {
+                    System.out.println("Error closing " + filename);
+                }
             }
-            catch (IOException e2) {
-              System.out.println("Error closing " + filename);
-            }
-          }
       
-          if (ps!=null) {
-            ps.close();
-          }
+            if (ps!=null) 
+            {
+                ps.close();
+            }
         }
       }
 
-    static void displayQuotes(ArrayList<String> quotes, int delay, int max)
+    static void displayQuotes(int delay, int max) throws IOException 
     {
         delay *= 1000;
         int counter = 1;
+        
         while(counter <= max)
         {
+            ArrayList<String> quotes = new ArrayList<String>();  
+            createQuotes(quotes);
             System.out.print("("+(counter++)+")");
-            printQuote(getRandomQuotes(quotes));
+            int position = getRandomQuotes(quotes);
+            printQuote(quotes.get(position), position);
             try 
             {
                 Thread.sleep(delay);
@@ -387,43 +401,45 @@ public class MemorableQuotes
         }  
     }
 
-    static void printQuote(String quotes, int position)
+    static void printQuote(String quotes, int position) throws IOException 
     {
 
         String[] split = quotes.split("@", 4);
+        int count = Integer.parseInt(split[3]);
+        count++;
+        split[3] = Integer.toString(count);
+        String combine = split[0]+"@"+split[1]+"@"+split[2]+"@"+count;
+        modifyQuotes(position, combine ,filename);
+
         System.out.println(split[0]);
         System.out.print("-- " + split[1]);
         System.out.print(" (count:"+split[3]+")");
         System.out.println();
-        int count = Integer.parseInt(split[3]);
-        count++;
-        String combine = split[0]+"@"+split[1]+"@"+split[2]+"@"+count;
-
-        boolean res = modifyQuotes(position, combine ,filename);
+        
     }
 
-    static void searchQuote(ArrayList<String> quotes, String args)
+    static void searchQuote(ArrayList<String> quotes, String args) throws IOException
     {
-        for(String i : quotes)
+        for(int i = 0; i < quotes.size(); i++)
         {
-            String[] split = i.split("@", 2);
+            String[] split = quotes.get(i).split("@", 2);
 
             if(split[1].toLowerCase().contains(args.toLowerCase()))
             {
-                printQuote(i);
+                printQuote(quotes.get(i), i);
             }
         }
     }
 
-    static void cSearchQuote(ArrayList<String> quotes, String args)
+    static void cSearchQuote(ArrayList<String> quotes, String args) throws IOException
     {
-        for(String i : quotes)
+        for(int i = 0; i < quotes.size(); i++)
         {
-            String[] split = i.split("@",2);
+            String[] split = quotes.get(i).split("@",2);
 
             if(split[0].toLowerCase().contains(args.toLowerCase()))
             {
-                printQuote(i);
+                printQuote(quotes.get(i), i);
             }
         }
     }
@@ -447,10 +463,10 @@ public class MemorableQuotes
         }
     }
 
-    static String getRandomQuotes(ArrayList<String> quotes)
+    static int getRandomQuotes(ArrayList<String> quotes)
     {   
         Random ran = new Random();
         int result = ran.nextInt(quotes.size());
-        return new Pair<ArrayList<String>, int>(quotes.get(result), result);
+        return result;
     }   
 }
