@@ -182,11 +182,20 @@ public class MemorableQuotes
         try
         {
             FileWriter fw = new FileWriter(filename,true); //the true will append the new data
-            fw.write("\n");
             for(int i = 1; i < args.length; i++)
-            {  
-                fw.write(args[i]+" ");//appends the string to the file
+            { 
+                if(i == args.length-1)
+                {
+                    System.out.println("last line");
+                    fw.write(args[i]); //appends the string to the file
+                }
+                else
+                {
+                    fw.write(args[i]+" "); //appends the string to the file
+                }
+                
             }
+            fw.write("\n");
             fw.close();
         }
         catch(IOException ioe)
@@ -290,14 +299,19 @@ public class MemorableQuotes
                     // add a character to a string
                     s = s + (char)symbol;
                 }
+
             } while (fr.ready()); // Checking the end of the file
 
         }
-        catch (IOException e) {
+
+        catch (IOException e) 
+        {
             // 5.3. If the file is not open, then display the appropriate message
             System.out.println("I/O error: " + e);
         }
-        finally {
+
+        finally 
+        {
             // 5.4. Close file if it was open
             try 
             {
@@ -409,7 +423,7 @@ public class MemorableQuotes
         count++;
         split[3] = Integer.toString(count);
         String combine = split[0]+"@"+split[1]+"@"+split[2]+"@"+count;
-        modifyQuotes(position, combine ,filename);
+        modifyQuotes(position + 1, combine ,filename);
 
         System.out.println(split[0]);
         System.out.print("-- " + split[1]);
