@@ -3,6 +3,24 @@ import java.util.*;
 public class MemorableQuoteDatabase 
 {
     ArrayList<MemorableQuote> quotes = new ArrayList<>();
+    String category;
+
+    public void setCategory(String category)
+    {
+
+        ArrayList<MemorableQuote> temp = new ArrayList<>();
+        this.category = category;
+
+        for (MemorableQuote quote : quotes) 
+        {
+            if(category == quote.getCategory())
+            {
+                temp.add(quote);
+            }
+        }
+
+        quotes = temp;
+    }
 
     public MemorableQuoteDatabase(ArrayList<MemorableQuote> list)
     {

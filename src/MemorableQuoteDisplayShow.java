@@ -36,10 +36,11 @@ public class MemorableQuoteDisplayShow
 
         while(this.maxQuotesToDisplay <= 0)
         {
+            
             this.maxQuotesToDisplay++;
 
-           database.getRandomQuote().printQuote();
-            
+            database.getRandomQuote().printQuote();;
+
             try 
             {
                 Thread.sleep(delayBetweenQuotes);

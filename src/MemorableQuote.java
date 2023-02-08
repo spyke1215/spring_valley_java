@@ -1,15 +1,14 @@
-import java.util.ArrayList;
-
 public class MemorableQuote 
 {
     String quoteText;
     String quoteReference;
+    String quoteCategory;
 
-    ArrayList<Integer> counted = new ArrayList<Integer>();
+    int count;
 
-    public void getCount(int index)
+    public String getCategory()
     {
-        counted.get(index);
+        return quoteCategory;
     }
     
     public String getQuote()
@@ -22,20 +21,24 @@ public class MemorableQuote
         return quoteReference;
     }
 
-    public MemorableQuote(String quote, String reference)
+    public MemorableQuote(String quote, String reference, String category)
     {
         this.quoteText = quote;
         this.quoteReference = reference;
+        this.quoteCategory = category;
     }
 
     public void printQuote()
     {
+        count++;
         if(quoteReference == "")
         {
+            System.out.print("("+count+") ");
             System.out.println(quoteText);
         }
         else
         {
+            System.out.print("("+count+") ");
             System.out.println(quoteText);
             System.out.println("--" + quoteReference);
         }
@@ -43,7 +46,6 @@ public class MemorableQuote
 
     public boolean matches(String text)
     {   
-
         if (quoteText.toLowerCase().contains(text.toLowerCase()) || quoteReference.toLowerCase().contains(text.toLowerCase()))
         {
             return true;
@@ -52,7 +54,5 @@ public class MemorableQuote
         {
             return false;
         }
-        
     }
-
 }

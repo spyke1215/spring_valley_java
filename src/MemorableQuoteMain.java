@@ -8,9 +8,15 @@ public class MemorableQuoteMain
         MemorableQuoteDatabase database = new MemorableQuoteDatabase(quotes);
         MemorableQuoteDisplayShow display = new MemorableQuoteDisplayShow(database);
         
-        database.addQuote(new MemorableQuote("The greatest glory in living lies not in never falling, but in rising every time we fall","Nelson Mandela"));
-        database.addQuote(new MemorableQuote("The way to get started is to quit talking and begin doing","Walt Disney"));
-        database.addQuote(new MemorableQuote("Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma which is living with the results of other people's thinking","Steve Jobs"));
+        database.addQuote(new MemorableQuote("The greatest glory in living lies not in never falling, but in rising every time we fall","Nelson Mandela","category1"));
+        database.addQuote(new MemorableQuote("The way to get started is to quit talking and begin doing","Walt Disney","category2"));
+        database.addQuote(new MemorableQuote("Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma which is living with the results of other people's thinking","Steve Jobs","category3"));
+        
+        if(args[args.length-1].contains("category"))
+        {
+            String[] splitCategory = args[1].split("=",2);
+            database.setCategory(splitCategory[1]);
+        }
 
         if(args[0].contains("all"))
         {
