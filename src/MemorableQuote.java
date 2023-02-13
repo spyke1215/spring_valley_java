@@ -3,8 +3,13 @@ public class MemorableQuote
     String quoteText;
     String quoteReference;
     String quoteCategory;
-
+    int quoteCount;
     int count;
+
+    public Integer getCount()
+    {
+        return quoteCount;
+    }
 
     public String getCategory()
     {
@@ -21,11 +26,32 @@ public class MemorableQuote
         return quoteReference;
     }
 
-    public MemorableQuote(String quote, String reference, String category)
+    public void setCount(Integer count)
+    {
+        this.quoteCount = count;
+    }
+
+    public void setCategory(String category)
+    {
+        this.quoteCategory = category;
+    }
+    
+    public void setQuote(String text)
+    {
+        this.quoteText = text;
+    }
+
+    public void setReference(String reference)
+    {
+        this.quoteReference = reference;
+    }
+
+    public MemorableQuote(String quote, String reference, String category, Integer count)
     {
         this.quoteText = quote;
         this.quoteReference = reference;
         this.quoteCategory = category;
+        this.quoteCount = count;
     }
 
     public void printQuote()
@@ -46,7 +72,7 @@ public class MemorableQuote
 
     public boolean matches(String text)
     {   
-        if (quoteText.toLowerCase().contains(text.toLowerCase()) || quoteReference.toLowerCase().contains(text.toLowerCase()))
+        if (quoteText.toLowerCase().contains(text.toLowerCase()) || quoteReference.toLowerCase().contains(text.toLowerCase()) || quoteCategory.toLowerCase().contains(text.toLowerCase()))
         {
             return true;
         }
