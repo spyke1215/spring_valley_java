@@ -68,19 +68,60 @@ public class MemorableQuoteMain
                 display.execute();
             }
         }
-        else if(args[0].contains("add"))
-        {   
-            String[] splitQuotes =  args[args.length+1].split("@",4);
+        else if (args[0].equals("add")) 
+        {
+            StringBuffer sb = new StringBuffer();
+            for(int i = 1; i < args.length; i++)
+            { 
+                if(i < args.length)
+                {
+                    sb.append(args[i]+ " ");
+                }
+                else
+                {
+                    sb.append(args[i]);
+                }
+            }
 
-            quotes.add(new MemorableQuote(splitQuotes[0],splitQuotes[1],splitQuotes[2],Integer.parseInt(splitQuotes[3])));
+            String text = sb.toString();
+            String[] parts = text.split("@");
+            String quoteText = parts[0];
+            String quoteRefernece = parts[1];
+            String quoteCategory = parts[2];
+            
+            quotes.add(new MemorableQuote(quoteText, quoteRefernece, quoteCategory, 0));
         }
         else if(args[0].contains("delete"))
         {
-
+            MemorableQuote quote = database.getQuoteByIndex(Integer.parseInt(args[1]));
+            database.removeQuote(quote);
         }
         else if(args[0].contains("modify"))
         {
+            StringBuffer sb = new StringBuffer();
+            for(int i = 2; i < args.length; i++)
+            { 
+                if(i < args.length)
+                {
+                    sb.append(args[i]+ " ");
+                }
+                else
+                {
+                    sb.append(args[i]);
+                }
+            }
 
+            String text = sb.toString();
+            String[] parts = text.split("@");
+            String quoteText = parts[0];
+            String quoteRefernece = parts[1];
+            String quoteCategory = parts[2];
+            
+            MemorableQuote quote = database.getQuoteByIndex(Integer.parseInt(args[1]));
+            quote.setQuote(quoteText);
+            quote.setReference(quoteRefernece);
+            quote.setCategory(quoteCategory);
+            quote.setCount(0);
         }
         else
         {
