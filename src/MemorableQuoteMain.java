@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
-
 public class MemorableQuoteMain 
 {
     public static void main(String[] args) throws FileNotFoundException 
     {
-        ArrayList<MemorableQuote> quotes = new ArrayList<>(); 
-        MemorableQuoteDatabase database = new MemorableQuoteDatabase(quotes);
+        MemorableQuoteDatabase database = new MemorableQuoteDatabase();
         MemorableQuoteDisplayShow display = new MemorableQuoteDisplayShow(database);
 
         String filename = "quotes.txt";
@@ -39,6 +37,16 @@ public class MemorableQuoteMain
             quote.setCount(quote.getCount() + 1);
             quote.printQuote();
             
+        }
+        else if(args[0].contains("reset"))
+        {
+            ArrayList<MemorableQuote> reset = database.searchQuotes(args[1]);
+
+            for(MemorableQuote quote : reset) 
+            {
+                quote.setCount(quote.getCount() + 1);
+                quote.setCount(0);
+            }
         }
         else if(args[0].contains("search"))
         {
@@ -89,7 +97,7 @@ public class MemorableQuoteMain
             String quoteRefernece = parts[1];
             String quoteCategory = parts[2];
             
-            quotes.add(new MemorableQuote(quoteText, quoteRefernece, quoteCategory, 0));
+            new MemorableQuote(quoteText, quoteRefernece, quoteCategory, 0);
         }
         else if(args[0].contains("delete"))
         {
@@ -125,7 +133,7 @@ public class MemorableQuoteMain
         }
         else
         {
-            System.out.println("Not Found");
+            System.out.println("ERROR: Invalid argument/s");
         }
 
         database.writeToFile(filename);
@@ -183,10 +191,10 @@ class MemorableQuoteDatabase
         }
     }
 
-    public MemorableQuoteDatabase(ArrayList<MemorableQuote> list)
-    {
-        this.quotes = list;
-    }
+    // public MemorableQuoteDatabase(ArrayList<MemorableQuote> list)
+    // {
+    //     this.quotes = list;
+    // }
     
     public ArrayList<MemorableQuote> searchQuotes(String text)
     {
