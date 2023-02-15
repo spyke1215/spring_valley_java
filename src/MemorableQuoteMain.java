@@ -55,7 +55,7 @@ public class MemorableQuoteMain
                 quote.printQuote();
             }
         }
-        else if(args[0].contains("display")) //java MemorableQuoteMain.java display delay=* max=* category=*
+        else if(args[0].contains("display")) //java MemorableQuoteMain.java display delay=* max=*
         {
             if(args.length == 3 || args.length == 4)
             {
