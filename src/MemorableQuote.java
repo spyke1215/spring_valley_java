@@ -4,7 +4,6 @@ public class MemorableQuote
     String quoteReference;
     String quoteCategory;
     int quoteCount;
-    int count;
 
     public Integer getCount()
     {
@@ -56,15 +55,14 @@ public class MemorableQuote
 
     public void printQuote()
     {
-        count++;
         if(quoteReference == "")
         {
-            System.out.print("("+count+") ");
+            System.out.print("("+ quoteCount +") ");
             System.out.println(quoteText);
         }
         else
         {
-            System.out.print("("+count+") ");
+            System.out.print("("+ quoteCount +") ");
             System.out.println(quoteText);
             System.out.println("--" + quoteReference);
         }

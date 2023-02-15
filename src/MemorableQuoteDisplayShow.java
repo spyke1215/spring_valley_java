@@ -39,7 +39,10 @@ public class MemorableQuoteDisplayShow
             
             this.maxQuotesToDisplay++;
 
-            database.getRandomQuote().printQuote();
+            MemorableQuote quote = database.getRandomQuote();
+
+            quote.setCount(quote.getCount() + 1);
+            quote.printQuote();
 
             try 
             {
